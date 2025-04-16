@@ -9,3 +9,5 @@ streamlit
 streamlit-tags
 crawl4ai
 pymupdf
+nest_asyncio
+aiosqlite
