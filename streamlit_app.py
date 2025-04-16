@@ -7,8 +7,18 @@
 #     #abm_summary = generate_pdf_summary(abm_context, model_selection)  
     
 
-
+import asyncio
+import nest_asyncio
 import streamlit as st
+
+# Apply nest_asyncio to allow running asyncio loops within Streamlit
+nest_asyncio.apply()
+
+# Set up asyncio event loop for the main thread
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
+
 from streamlit_tags import st_tags_sidebar
 import pandas as pd
 import json
@@ -17,6 +27,7 @@ import sys
 import asyncio
 import numpy as np
 from markdown_io import get_paginated_urls
+
 
 
 # ---local imports---
