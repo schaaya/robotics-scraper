@@ -7,8 +7,8 @@ OPENAI_MODEL_FULLNAME = "gpt-4o"
 MODELS_USED = {
     "GNEWS": {"GNEWS_API_KEY"},
     "gpt-4o": {"OPENAI_API_KEY"},
-    # "gemini/gemini-1.5-flash": {"GEMINI_API_KEY"},
-    # "groq/deepseek-r1-distill-llama-70b": {"GROQ_API_KEY"},
+    "gemini/gemini-1.5-flash": {"GEMINI_API_KEY"},
+    "groq/deepseek-r1-distill-llama-70b": {"GROQ_API_KEY"},
 }
 
 
