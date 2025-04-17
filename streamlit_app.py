@@ -64,7 +64,7 @@ with st.sidebar.expander("🔑 Enter API Keys", expanded=False):
             st.text_input(
                 f"{key_name} ({model})",
                 type="password",
-                key=f"{key_name}_{model}"
+                key=f"{key_name}"
             )
 
     st.session_state['SUPABASE_URL'] = st.text_input("SUPABASE URL")
@@ -238,7 +238,8 @@ if st.session_state['scraping_state'] == 'completed' and st.session_state['resul
                 all_rows.append(listing)
         else:
             all_rows.append(parsed_obj)
-
+            
+    display_df = None
     if not all_rows:
         st.warning("No data rows to display.")
     else:
@@ -289,7 +290,7 @@ if st.session_state['scraping_state'] == 'completed' and st.session_state['resul
         st.download_button("Download JSON", data=json_data, file_name="scraped_data.json")
 
     with col2:  # ✅ moved out from under col1
-        if not display_df.empty:
+        if display_df is not None and not display_df.empty:
             csv_data = display_df.to_csv(index=False)
             st.download_button("Download CSV", data=csv_data, file_name="scraped_data.csv")
         else:
