@@ -6,18 +6,14 @@
 #         abm_summary = generate_pdf_summary(abm_context, model_selection)
 #     #abm_summary = generate_pdf_summary(abm_context, model_selection)  
     
-
+import os
+os.makedirs('abm_reports', exist_ok=True) 
 import asyncio
 import nest_asyncio
 import streamlit as st
 
 # Apply nest_asyncio to allow running asyncio loops within Streamlit
 nest_asyncio.apply()
-
-# Set up asyncio event loop for the main thread
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
-
 
 from streamlit_tags import st_tags_sidebar
 import pandas as pd
@@ -181,12 +177,22 @@ if st.session_state['scraping_state'] == 'scraping':
             total_cost = 0
             all_data = []
 
-            in_tokens_s, out_tokens_s, cost_s, parsed_data = scrape_urls(
-                unique_names, st.session_state['fields'], st.session_state['model_selection'], abm_context)
-            total_input_tokens += in_tokens_s
-            total_output_tokens += out_tokens_s
-            total_cost += cost_s
-            all_data = parsed_data
+            try:
+                in_tokens_s, out_tokens_s, cost_s, parsed_data = process_urls(
+                    unique_names, st.session_state['fields'], st.session_state['model_selection'], abm_context)
+                total_input_tokens += in_tokens_s
+                total_output_tokens += out_tokens_s
+                total_cost += cost_s
+                all_data = parsed_data
+            except Exception as api_error:
+                # Check for specific error types with broader patterns
+                if any(term in error_str for term in ["API key not valid", "authentication", "auth error"]):
+                    st.error(f"Please enter a valid API key for the selected model: {st.session_state['model_selection']}")
+                elif any(term in error_str for term in ["LLM Provider NOT provided", "provider not", "You passed model=GNEWS"]):
+                    st.error(f"Invalid model configuration. Please check the model settings for '{st.session_state['model_selection']}'")
+                else:
+                    st.error(f"An error occurred: {api_error}")
+                    # raise ValueError("An error occurred while scraping the URLs. Please check the logs for more details.")
 
             st.session_state.update({
                 'in_tokens_s': in_tokens_s,
