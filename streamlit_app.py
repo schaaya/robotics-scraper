@@ -179,7 +179,7 @@ if st.session_state['scraping_state'] == 'scraping':
             error_str = ""
 
             try:
-                in_tokens_s, out_tokens_s, cost_s, parsed_data = process_urls(
+                in_tokens_s, out_tokens_s, cost_s, parsed_data = scrape_urls(
                     unique_names, st.session_state['fields'], st.session_state['model_selection'], abm_context)
                 total_input_tokens += in_tokens_s
                 total_output_tokens += out_tokens_s
