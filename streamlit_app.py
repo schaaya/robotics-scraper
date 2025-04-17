@@ -176,6 +176,7 @@ if st.session_state['scraping_state'] == 'scraping':
             total_output_tokens = 0
             total_cost = 0
             all_data = []
+            error_str = ""
 
             try:
                 in_tokens_s, out_tokens_s, cost_s, parsed_data = process_urls(
